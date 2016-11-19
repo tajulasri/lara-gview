@@ -11,7 +11,7 @@ This package is just for generate single blade view for laravel 5.Instead of bun
 2.Register service provider
 ```php
 
-	LaraGview\LaraGviewServiceProvider::class,
+	LaraGview\LaraGViewServiceProvider::class
 ```
 
 3.Generate single view command
