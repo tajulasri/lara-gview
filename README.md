@@ -4,7 +4,7 @@ This package is just for generate single blade view for laravel 5.Instead of bun
 1.Installation
 ```php
 	
-	"tajula-asri/laragview": "1.0"
+	"tajula-asri/lara-gview": "1.0"
 ```
 
 
