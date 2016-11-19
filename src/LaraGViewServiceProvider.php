@@ -16,7 +16,7 @@ class LaraGViewServiceProvider extends ServiceProvider
         if ($this->app->runningInConsole()) {
         
         $this->commands([
-           LaraGview\Commands\GenerateView::class
+           \LaraGview\Commands\GenerateView::class
         ]);
     }
     }
