@@ -35,7 +35,7 @@ class GenerateView extends Command
      *
      * @var string
      */
-    protected $signature = 'lgview::make {page} {--path=default}';
+    protected $signature = 'lgview:make {page} {--path=default}';
 
     /**
      * The console command description.
