@@ -3,29 +3,25 @@ This package is just for generate single blade view for laravel 5.Instead of bun
 
 1.Installation
 ```php
-	
-	"tajula-asri/lara-gview": "1.0"
+	"tajul-asri/lara-gview": "1.0"
 ```
 
 
 2.Register service provider
 ```php
-
 	LaraGview\LaraGViewServiceProvider::class
 ```
 
 3.Generate single view command
 ```php
-	
 	php artisan lgview:make my_single_blade_view 
 ```
 
 4.Generate with directory
-```
+```php
 	php artisan lgview:make my_single_blade_view --path=users
 ```
 ```php
-	
 	php artisan lgview:make my_single_blade_view --path=users.admin
 ```
 
