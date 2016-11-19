@@ -35,7 +35,7 @@ class GenerateView extends Command
      *
      * @var string
      */
-    protected $signature = 'make:view {page} {--path=default}';
+    protected $signature = 'lgview::make {page} {--path=default}';
 
     /**
      * The console command description.
@@ -64,6 +64,9 @@ class GenerateView extends Command
 
 
     const DS = DIRECTORY_SEPARATOR;
+    
+
+    const FILE_EXTENSION = '.blade.php';
     /**
      * Create a new command instance.
      *
@@ -88,8 +91,6 @@ class GenerateView extends Command
         $this->directory = explode('.',$this->directory);
         $this->directory = implode('/',$this->directory);
 
-        $action = $this->createViewfile($this->argument('page'));
-
         if($this->createViewfile($this->argument('page')))
         {
             return $this->info("view successfully created..");
@@ -99,18 +100,41 @@ class GenerateView extends Command
     protected function createViewfile($file) 
     {
 
+        $this->default_resource_path = $this->getViewConfigPath();
         $create_dir = $this->default_resource_path.static::DS.$this->directory;
-        $full_path = $this->default_resource_path.static::DS.$this->directory.static::DS.$file;
-
-        if(! $this->filesystem->exists($full_path)) { //should be check whether file is exists or not
-            return file_put_contents($file,$this->loadViewStub());
+        $full_path = $this->default_resource_path.static::DS.$this->directory.static::DS.$file.static::FILE_EXTENSION;
+        
+        if(! $this->filesystem->exists($create_dir)) { //should be check whether file is exists or not
+            @$this->filesystem->makeDirectory($create_dir,493,true);
         }
-        else
-        {
-            if ($this->confirm('File are exists.Do you wish to continue? [yes|no]'))
-            {
-                return file_put_contents($file,$this->loadViewStub());   
+
+        if($this->option('path')) {
+            
+            if($this->filesystem->isWritable($create_dir)) {
+                return file_put_contents($full_path,$this->loadViewStub(),true);
             }
+            else {
+
+                return $this->error('Current directory are not has any permission.');
+            }
+        }
+       
+        if($this->filesystem->isWritable($create_dir)) {
+            if($this->filesystem->exists($full_path)) {
+
+                if($this->confirm('view already exists.Overwrite content?','[yes|no]')) {
+                     return file_put_contents($full_path,$this->loadViewStub(),true);
+                }
+            }
+            else {
+
+                return file_put_contents($full_path,$this->loadViewStub(),true);
+            }
+        }
+        
+        else {
+
+            return $this->error('Current directory are not has any permission.');
         }
     
     }
@@ -118,14 +142,14 @@ class GenerateView extends Command
 
     protected function loadViewStub() {
 
-        return file_get_contents(__DIR__.'../Stubs/view.stubs');
+        return file_get_contents(__DIR__.'/../Stubs/view.stubs',true);
     }
     /**
      * [getViewConfigPath description]
      * @return [type] [description]
      */
     protected function getViewConfigPath() {
-        return $this->config->get('views.path');
+        return $this->config->get('view.paths')[0];
     }
 }
 
